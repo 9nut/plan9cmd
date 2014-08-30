@@ -1,0 +1,14 @@
+#!/bin/rc
+# My dog Target, was a great dog; she and my cat Tippy often hunted together.
+
+rfork n
+mntgen /n
+bind '#|' /n/mouse
+tippy <>[0]/dev/mouse <>[1]/n/mouse/data &
+bind /n/mouse/data1 /dev/mouse
+if (~ $#* 0) {
+	exec rio
+}
+if not {
+	exec $*
+}

@@ -1,0 +1,16 @@
+</$objtype/mkfile
+
+TARG=tippy
+
+OFILES=\
+	tippy.$O\
+
+BIN=/$objtype/bin
+
+UPDATE=\
+	mkfile\
+	${OFILES:%.$O=%.c}\
+
+</sys/src/cmd/mkone
+
+$O.out:
