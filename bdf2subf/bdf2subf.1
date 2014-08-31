@@ -1,0 +1,78 @@
+.TH BDF2SUBF 1
+.SH NAME
+bdf2subf \- convert glyphs in a BDF file to Subfont format
+.SH SYNOPSIS
+.B bdf2subf [-f]
+.IB BDF-file
+.PP
+or
+.PP
+.B bdf2subf
+.IB BDF-file " [" hex-hex ]
+.SH DESCRIPTION
+.I Bdf2subf
+converts glyphs described in a BDF file to Plan9 style fonts.  It can
+print .font format file using all the contiguous ranges of the glyphs found
+in the BDF file or convert them and write
+the glyph images and a Subfont structure describing them.  When
+printing a .font file, or converting a specific range, the output
+goes to stdout.   When converting a whole BDF file, the output will
+be a number of files for each contiguous range of glyphs. The output
+file name is formed by taking the basename of the
+.I BDF-file
+and appending the hexadecimal range of the glyphs to it.
+.PP
+The hexadecimal value
+.I hex
+corresponds to the 
+.I ENCODING
+keyword value in the BDF file.  Usually this represents the Unicode
+encoding value for each glyph. When extracting a subrange from
+a file, the
+.IR hex - hex
+subrange must be present in the file.
+.PP
+Flags are:
+.PP
+.BI -f
+Print a .font file showing the contiguous subranges of glyphs in the BDF file. Subranges are
+sorted by the
+.I ENCODING
+value.
+.PP
+When only the BDF filename is given, the program converts all
+subranges found, into newly created files.  The file names for the
+subranges are created using the method described earlier.
+.SH EXAMPLES
+To generate a file suitable for use as a '.font' file:
+.IP
+.EX
+bdf2subf -f afont.bdf > afont.font
+.EE
+.LP
+Subsequently, you can use the following to actually generate
+the subfont files:
+.IP
+.EX
+bdf2subf afont.bdf
+.EE
+.LP
+In the above example the files will have the form
+.I afont.xxx-xxx
+where
+.I xxx-xxx
+is a contiguous ranges of encoding values for the glyphs found
+in the file.
+.LP
+To view the glyphs in the subrange 600-6FF in a file, use:
+.IP
+.EX
+bdf2subf afont.bdf  600-6FF | page
+.EE
+.PP
+.SH SOURCE
+bdf2subf/bdf2subf.[hc] bdf2subf/gram.y bdf2subf/lex.c
+.SH "SEE ALSO"
+subfont(2) cachechars(2) font(6) utf(6)
+.SH BUGS
+Included.

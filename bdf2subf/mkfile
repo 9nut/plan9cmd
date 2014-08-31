@@ -1,0 +1,29 @@
+</$objtype/mkfile
+
+TARG=bdf2subf
+FILES=bdf2subf.c\
+	lex.c\
+
+CFILES=$FILES y.tab.c
+OFILES=${CFILES:%.c=%.$O}
+HFILES=bdf2subf.h\
+	y.tab.h\
+
+YFILES=gram.y
+
+ALLFILES=$FILES $YFILES bdf2subf.h bdf2subf.1 mkfile Readme
+
+BIN=/$objtype/bin
+</sys/src/cmd/mkone
+
+clean:V:
+	rm -f [$OS].out *.[$OS] y.tab.? y.debug $TARG
+
+smoke: $O.out
+	$O.out -f test/persian.bdf >/dev/null
+
+bdf2subf.bundle: $O.out
+	bundle $ALLFILES > bdf2subf.bundle
+
+bdf2subf.tgz: $O.out
+	tar c $ALLFILES > bdf2subf.tar && gzip bdf2subf.tar && rm bdf2subf.tar
