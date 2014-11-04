@@ -22,7 +22,7 @@ type InfTime struct {
 	srv.File
 }
 
-var addr = flag.String("srv", "timefs", "/srv name")
+var addr = flag.String("s", "timefs", "/srv name")
 var debug = flag.Bool("d", false, "print debug messages")
 var debugall = flag.Bool("D", false, "print packets as well as debug messages")
 
