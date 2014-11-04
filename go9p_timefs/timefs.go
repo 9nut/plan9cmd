@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os/user"
 	"time"
 )
 
@@ -57,21 +58,27 @@ func main() {
 	var s *srv.Fsrv
 	var p9c net.Conn
 	var ch chan bool
+	var usr *user.User
 
 	flag.Parse()
 	root := new(srv.File)
-	err = root.Add(nil, "/", UserNone("fst"), nil, p.DMDIR|0555, nil)
+	usr, err = user.Current()
+	if err != nil {
+		goto error
+	}
+	// log.Println("running as User: ", usr)
+	err = root.Add(nil, "/", UserNone(usr.Uid), nil, p.DMDIR|0555, nil)
 	if err != nil {
 		goto error
 	}
 
 	tm = new(Time)
-	err = tm.Add(root, "time", UserNone("fst"), nil, 0444, tm)
+	err = tm.Add(root, "time", UserNone(usr.Uid), nil, 0444, tm)
 	if err != nil {
 		goto error
 	}
 	ntm = new(InfTime)
-	err = ntm.Add(root, "inftime", UserNone("fst"), nil, 0444, ntm)
+	err = ntm.Add(root, "inftime", UserNone(usr.Uid), nil, 0444, ntm)
 	if err != nil {
 		goto error
 	}
