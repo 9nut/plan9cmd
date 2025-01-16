@@ -1,0 +1,50 @@
+Dcfs is a simple read-only filesystem for Plan9.  It is useful for
+some cameras based on the Fujitsu chipset with TWAIN protocol over a
+serial connection.
+
+All the low level routines for talking to the camera and what
+registers to look at and poke at are supplied in the PhotoPC package.
+PhotoPC is the work of Eugene G.  Crosser and Bruce D.  Lightner.
+
+http://photopc.sourceforge.net/
+
+Charles Forsyth's ported of PhotoPC to Plan9, and the files eph.c and
+eph_io.h come from this package.  Forsyth's Software page has the
+complete photopc port:
+
+http://www.caldo.demon.co.uk/plan9/soft/
+
+The fs part is my doing.  Send the bug reports to me: fst@9netics.com
+As usual, you can do what you want with the parts I've written, but
+don't come crying to me if something doesn't work ☺
+Dcfs has only been tested on a Sanyo VPC-X360.
+
+The eventual goal is to have an fs with this general layout:
+
+	ctl	# for commands to the camera -- eventually
+	pics/
+		pic01
+		pic02
+		...
+	seqs/
+		seq01/
+		seq02/
+		...
+	clips/
+		clip01
+		clip02
+		...
+
+Reading ctl should perhaps return the camera ID information, etc.
+commands that can be written to ctl should be:
+	snap		- take a snapshot
+	bitrate xxx	- set port speed
+	port xxx		- ??? set to a different port. Not sure about this
+	maxretry xxx	- maximum retry count to contact the camera
+	???
+
+for now, it just builds the tree upfront based on the current number
+of images in the camera, and makes a read-only directory of the
+still images.  by not supplying the close service function, the buffers for
+the actual content will be around after the first read, a type of
+caching.

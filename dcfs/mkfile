@@ -1,0 +1,24 @@
+</$objtype/mkfile
+
+CFILES=dcfs.c\
+	eph.c\
+
+HFILES=eph_io.h\
+
+OFILES=${CFILES:%.c=%.$O}
+
+CFLAGS= -w -F
+
+BIN=$home/bin/$objtype
+TARG=dcfs
+
+</sys/src/cmd/mkone
+
+clean:V:
+	rm -f [$OS].out *.[$OS] $TARG
+
+$TARG:   $OFILES
+	$LD $LDFLAGS -o $target $prereq
+
+dcfs.tgz: $O.out
+	tar c $CFILES $HFILES README mkfile > dcfs.tar && gzip dcfs.tar && rm dcfs.tar
