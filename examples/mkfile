@@ -1,0 +1,17 @@
+</$objtype/mkfile
+
+TARG=\
+	demo3d\
+
+OFILES=
+
+BIN=/$objtype/bin
+
+UPDATE=\
+	mkfile\
+	$HFILES\
+	${OFILES:%.$O=%.c}\
+	${TARG:%=%.c}\
+
+</sys/src/cmd/mkmany
+
